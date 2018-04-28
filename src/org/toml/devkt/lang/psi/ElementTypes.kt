@@ -5,7 +5,7 @@
 
 package org.toml.devkt.lang.psi
 
-import org.ice1000.devkt.ui.DevKtIcons
+import org.ice1000.devkt.openapi.ui.IconLoader
 import org.jetbrains.kotlin.com.intellij.openapi.fileTypes.LanguageFileType
 import org.jetbrains.kotlin.com.intellij.openapi.vfs.VirtualFile
 import org.jetbrains.kotlin.com.intellij.psi.tree.IElementType
@@ -19,5 +19,6 @@ object TomlFileType : LanguageFileType(TomlLanguage) {
 	override fun getDescription() = "TOML file"
 	override fun getDefaultExtension() = "toml"
 	override fun getCharset(file: VirtualFile, content: ByteArray) = "UTF-8"
-	override fun getIcon() = DevKtIcons.ANY
+	private val icon = IconLoader.getIcon("/icon/cargo.png")
+	override fun getIcon() = icon
 }

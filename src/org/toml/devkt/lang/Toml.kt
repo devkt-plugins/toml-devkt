@@ -2,18 +2,15 @@ package org.toml.devkt.lang
 
 import org.ice1000.devkt.ASTToken
 import org.ice1000.devkt.openapi.*
-import org.ice1000.devkt.ui.DevKtIcons
 import org.jetbrains.kotlin.com.intellij.psi.PsiElement
 import org.jetbrains.kotlin.com.intellij.psi.tree.IElementType
 import org.toml.devkt.lang.parse.TomlParserDefinition
-import org.toml.devkt.lang.psi.TomlElementTypes
-import org.toml.devkt.lang.psi.TomlKey
-import javax.swing.Icon
+import org.toml.devkt.lang.psi.*
 
 class Toml<T> : ExtendedDevKtLanguage<T>(TomlLanguage, TomlParserDefinition) {
 	override fun satisfies(fileName: String) = fileName == "config" || fileName.endsWith(".toml")
 	override val lineCommentStart get() = "#"
-	override val icon: Icon get() = DevKtIcons.ANY
+	override val icon = TomlFileType.icon
 	override fun attributesOf(type: IElementType, colorScheme: ColorScheme<T>) = when (type) {
 		TomlElementTypes.BASIC_STRING,
 		TomlElementTypes.MULTILINE_BASIC_STRING,
@@ -34,9 +31,8 @@ class Toml<T> : ExtendedDevKtLanguage<T>(TomlLanguage, TomlParserDefinition) {
 		else -> super.attributesOf(type, colorScheme)
 	}
 
-	override fun invokeAutoPopup(currentElement: ASTToken, inputString: String): Boolean {
-		return inputString.firstOrNull()?.let { it in "" } == true || super.invokeAutoPopup(currentElement, inputString)
-	}
+	override fun invokeAutoPopup(currentElement: ASTToken, inputString: String) =
+			inputString.firstOrNull()?.let { it in "\"'1234567890-=" } == true || super.invokeAutoPopup(currentElement, inputString)
 
 	override fun annotate(element: PsiElement, document: AnnotationHolder<T>, colorScheme: ColorScheme<T>) {
 		super.annotate(element, document, colorScheme)
